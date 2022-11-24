@@ -1,7 +1,6 @@
 const firebase = require("firebase/app");
 require("firebase/auth");
 require("firebase/database");
-require("firebase/storage");
 
 const firebaseConfig = {
   apiKey: "AIzaSyBSptmCSkYFmryPlj7fIeZORbl3BIlJ9eU",
@@ -17,4 +16,4 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-module.exports = { firebase };
+module.exports = firebase;

@@ -7,16 +7,16 @@ const {
   createTodo,
   updateTodo,
   deleteTodo,
-} = require("../controllers/index.controller");
+} = require("../controllers/todo.controller");
 
-router.get("/", getTodos);
+router.get("/:uid", getTodos);
 
-router.get("/todo/:id", getTodo);
+router.get("/todo/:uid/:id", getTodo);
 
-router.post("/", createTodo);
+router.post("/:uid", createTodo);
 
-router.put("/:id", updateTodo);
+router.put("/:uid/:id", updateTodo);
 
-router.delete("/:id", deleteTodo);
+router.delete("/:uid/:id", deleteTodo);
 
 module.exports = router;
