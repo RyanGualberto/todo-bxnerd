@@ -1,33 +1,37 @@
 const { firebase } = require("../services/firebase");
 
-const getTodos = (req, res) => {
+const getTodos = (req, res, next) => {
   firebase
     .database()
     .ref("todos")
-    .on("value", (snapshot) => {
+    .once("value", (snapshot) => {
       const data = snapshot.val();
       res.status(200).json({
         message: "Todos fetched successfully",
         data: Object.values(data),
       });
+
+      next();
     });
 };
 
-const getTodo = (req, res) => {
+const getTodo = (req, res, next) => {
   const id = req.params.id;
   firebase
     .database()
     .ref("todos/" + id)
-    .on("value", (snapshot) => {
+    .once("value", (snapshot) => {
       const data = snapshot.val();
       res.status(200).json({
         message: "Todo fetched successfully",
         data: data,
       });
+
+      next();
     });
 };
 
-const createTodo = (req, res) => {
+const createTodo = (req, res, next) => {
   const data = req.body;
   firebase
     .database()
@@ -45,14 +49,25 @@ const createTodo = (req, res) => {
             message: "Todo created successfully",
             data: data,
           });
+
+          next();
+        })
+        .catch((error) => {
+          res.status(500).json({
+            message: "Todo creation failed",
+            error: error,
+          });
         });
     })
     .catch((error) => {
-      res.send(error.response);
+      res.status(500).json({
+        message: "Todo creation failed",
+        error: error,
+      });
     });
 };
 
-const updateTodo = (req, res) => {
+const updateTodo = (req, res, next) => {
   const id = req.params.id;
   const data = req.body;
   firebase
@@ -64,13 +79,15 @@ const updateTodo = (req, res) => {
         message: "Todo updated successfully",
         data: data,
       });
+
+      next();
     })
     .catch((error) => {
       res.send(error.response);
     });
 };
 
-const deleteTodo = (req, res) => {
+const deleteTodo = (req, res, next) => {
   const id = req.params.id;
   firebase
     .database()
@@ -80,6 +97,8 @@ const deleteTodo = (req, res) => {
       res.status(200).json({
         message: "Todo deleted successfully",
       });
+
+      next();
     })
     .catch((error) => {
       res.send(error.response);
