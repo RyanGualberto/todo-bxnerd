@@ -138,7 +138,7 @@ const getUser = (req, res, next) => {
 
   firebase
     .database()
-    .ref("users/" + firebase.auth().currentUser.uid)
+    .ref("users/" + req.params.id)
     .once("value")
     .then((snapshot) => {
       res.status(200).json({
