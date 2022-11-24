@@ -128,15 +128,24 @@ const CloseButton = styled.button`
   align-items: center;
   justify-content: center;
   padding: 10px;
-  position: absolute;
-  right: 20px;
-  top: 10px;
   border-radius: 6px;
   color: #fff;
+  font-size: 18px;
+  text-transform: capitalize;
   cursor: pointer;
 `;
 
 const ModalHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  color: #000;
+  margin-bottom: 10px;
+`;
+
+const ProfileInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -159,4 +168,5 @@ export {
   ModalTodoContainer,
   CloseButton,
   ModalHeader,
+  ProfileInfoContainer,
 };

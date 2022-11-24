@@ -29,6 +29,7 @@ export default function useAuth() {
       .then((response) => {
         toast.success(response.data.message);
         window.location.href = "/";
+
         return { message: response.data.message, uid: response.data.uid };
       })
       .catch((error) => {
@@ -42,8 +43,8 @@ export default function useAuth() {
     const { message, uid } = response;
 
     if (uid) {
-      await localStorage.setItem("@RNAuth:user", JSON.stringify(response));
-      setUser(response);
+      await localStorage.setItem("@RNAuth:user", JSON.stringify(uid));
+      setUser(uid);
     }
     setResponseMessage(message);
   }
@@ -56,6 +57,8 @@ export default function useAuth() {
       })
       .then((response) => {
         toast.success(response.data.message);
+        window.location.href = "/";
+        localStorage.removeItem("@RNAuth:user");
         return { message: response.data.message };
       })
       .catch((error) => {
@@ -67,12 +70,6 @@ export default function useAuth() {
       });
 
     const { message } = response;
-
-    if (message === "User logged out") {
-      await localStorage.clear().then(() => {
-        setUser(null);
-      });
-    }
     setResponseMessage(message);
   }
 
