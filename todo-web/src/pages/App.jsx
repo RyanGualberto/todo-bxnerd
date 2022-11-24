@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import useAuth from "../hooks/useAuth";
-import useTodo from "../hooks/useTodo";
 
 import {
   Container,
@@ -11,6 +10,9 @@ import {
   AddButton,
   ProfileInfoContainer,
   CloseButton,
+  TodoContainer,
+  TodoTitle,
+  MainContent,
 } from "../styles/index.styles";
 
 import { BsPlusLg, BsSearch } from "react-icons/bs";
@@ -22,6 +24,7 @@ export const ModalStateContext = React.createContext();
 
 export default function App() {
   const [modalStatus, setModalStatus] = React.useState(false);
+  const [currentTodo, setCurrentTodo] = React.useState(null);
   const { user, signOut } = useAuth();
   const [allTodos, setAllTodos] = React.useState([]);
   const [currentUser, setCurrentUser] = React.useState(null);
@@ -31,10 +34,12 @@ export default function App() {
       setCurrentUser(response.data.user);
     });
     api.get("/todos/" + user).then((todos) => setAllTodos(todos?.data?.data));
-  }, [user]);
+  }, [user, modalStatus]);
 
   return (
-    <ModalStateContext.Provider value={{ modalStatus, setModalStatus }}>
+    <ModalStateContext.Provider
+      value={{ currentTodo, setCurrentTodo, modalStatus, setModalStatus }}
+    >
       <Modal />
       <Container>
         <ModalContainer>
@@ -48,6 +53,20 @@ export default function App() {
               <BsSearch size={24} />
             </SearchButton>
           </SearchContainer>
+          <MainContent>
+            {allTodos?.reverse().map((todo) => (
+              <TodoContainer
+                onClick={() => {
+                  setModalStatus(true);
+                  setCurrentTodo(todo);
+                }}
+                key={todo.todoId}
+              >
+                <TodoTitle>{todo.title}</TodoTitle>
+                <p>{todo.description}</p>
+              </TodoContainer>
+            ))}
+          </MainContent>
           <AddButton onClick={() => setModalStatus(true)}>
             <BsPlusLg size={24} color="#fff" />
           </AddButton>
