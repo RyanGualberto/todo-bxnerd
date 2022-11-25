@@ -6,12 +6,22 @@ import Home from "../Screens/Home";
 
 import useAuth from "../hooks/useAuth";
 
+import { createStackNavigator } from "@react-navigation/stack";
+
 export default function Routes() {
   const { signed, user } = useAuth();
-
-  useEffect(() => {}, [signed, user]);
+  const Stack = createStackNavigator();
 
   return (
-    <NavigationContainer>{signed ? <Home /> : <Sign />}</NavigationContainer>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Sign" component={Sign} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

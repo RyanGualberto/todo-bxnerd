@@ -17,34 +17,40 @@ export default function useAuth() {
     loadStorageData();
   }, []);
 
-  async function signIn(email, password) {
+  async function signIn(email, password, navigation) {
     const response = await api
       .post("/users/login", {
         email: email,
         password: password,
       })
       .then((response) => {
-        return { message: response.data.message, uid: response.data.uid };
+        navigation.navigate("Home");
+        AsyncStorage.setItem("@RNAuth:user", JSON.stringify(response.data.uid));
+        setUser(response.data.uid);
+        return { message: response.data, uid: response.data.uid };
       })
       .catch((error) => {
+        console.log("login", error.response.data.message);
         return { message: error.response.data.message, uid: null };
       });
 
     const { message, uid } = response;
 
-    if (uid) {
-      await AsyncStorage.setItem("@RNAuth:user", JSON.stringify(response));
-      setUser(response);
-    }
-    setResponseMessage(message);
+    setResponseMessage(message?.message);
   }
 
-  async function signOut() {
+  async function signOut(navigation) {
     const response = await api
       .post("/users/logout", {
         uid: user.uid,
       })
       .then((response) => {
+        navigation.navigate("Sign");
+        AsyncStorage.clear().then(() => {
+          setUser({
+            uid: null,
+          });
+        });
         return { message: response.data.message };
       })
       .catch((error) => {
@@ -54,11 +60,6 @@ export default function useAuth() {
 
     const { message } = response;
 
-    if (message === "User logged out") {
-      await AsyncStorage.clear().then(() => {
-        setUser(null);
-      });
-    }
     setResponseMessage(message);
   }
 
@@ -70,9 +71,10 @@ export default function useAuth() {
         password,
       })
       .then((response) => {
-        setResponseMessage(response.data.message);
+        setResponseMessage(response.data);
       })
       .catch((error) => {
+        console.log(error.response);
         setResponseMessage(error.response.data.message);
       });
   }

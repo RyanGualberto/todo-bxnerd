@@ -4,16 +4,19 @@ const ModalContainer = styled.View`
   display: flex;
   flex-direction: column;
   position: relative;
-  background-color: #ffff;
+  background-color: #333;
   border-radius: 5px;
   padding: 20px;
   flex: 1;
+  z-index: ${(props) => (props.modal ? 10 : 0)};
+  height: 100%;
+  width: 100%;
 `;
 
 const Input = styled.TextInput`
   font-weight: 700;
   font-size: 16px;
-  color: #333;
+  color: #ffff;
   flex: 1;
   max-height: 44px;
   border: 1px solid #ccc;
@@ -25,49 +28,36 @@ const Input = styled.TextInput`
 const ButtonPrimary = styled.TouchableOpacity`
   background-color: #4caf50;
   font-weight: 700;
-  border: none;
-  color: #fff;
   padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 6px;
   margin: 4px 2px;
-  cursor: pointer;
 `;
 
 const ButtonSecondary = styled.TouchableOpacity`
   background-color: ${(props) => (props.disabled ? "#2196f350" : "#2196f3")};
-  border: none;
-  color: white;
   padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
   margin: 4px 2px;
-  cursor: pointer;
-  max-height: 44px;
 `;
 
 const ButtonDelete = styled.TouchableOpacity`
   background-color: #f44336;
-  border: none;
-  color: white;
+  align-items: center;
   padding: 15px 32px;
-  text-align: center;
   text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  font-weight: 700;
+  display: flex;
+  justify-content: center;
   border-radius: 6px;
   margin: 4px 2px;
-  cursor: pointer;
   max-height: 44px;
 `;
+
 const SearchContainer = styled.View`
   display: flex;
   flex-direction: row;
@@ -87,15 +77,13 @@ const SearchInput = styled.TextInput`
   max-height: 60px;
   padding-left: 5px;
   font-size: 16px;
-  color: #333;
+  color: #fff;
   font-weight: 700;
-  border: none;
 `;
 
 const SearchButton = styled.TouchableOpacity`
   background-color: #4caf50;
   border: none;
-  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -103,7 +91,6 @@ const SearchButton = styled.TouchableOpacity`
   margin: 0 5px;
   border-radius: 6px;
   color: #fff;
-  cursor: pointer;
 `;
 
 const AddButton = styled.TouchableOpacity`
@@ -118,16 +105,15 @@ const AddButton = styled.TouchableOpacity`
   right: 20px;
   bottom: 10px;
   border-radius: 6px;
-  cursor: pointer;
 `;
 
 const ModalTodoContainer = styled.View`
   display: flex;
   position: absolute;
-  background-color: #00000050;
-  height: 100vh;
-  width: 100vw;
-  z-index: 2;
+  background-color: #000000;
+  height: 100%;
+  width: 100%;
+  z-index: 5;
   justify-content: center;
   align-items: center;
 `;
@@ -143,7 +129,6 @@ const CloseButton = styled.TouchableOpacity`
   color: #fff;
   font-size: 18px;
   text-transform: capitalize;
-  cursor: pointer;
 `;
 
 const ModalHeader = styled.View`
@@ -164,24 +149,20 @@ const ProfileInfoContainer = styled.View`
   width: 100%;
   color: #333;
   margin-bottom: 10px;
+  margin-top: 30px;
 `;
 
-const TodoContainer = styled.View`
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  justify-content: center;
-  flex: 1;
-  border: 1px solid #333;
-  border-radius: 6px;
-  max-height: 70px;
-  margin: 10px 0;
+const TodoContainer = styled.TouchableOpacity`
+  padding: 10px 10px;
+  border: 0.5px solid #ccc;
+  margin-bottom: 15px;
+  border-radius: 5px;
 `;
 
 const TodoTitle = styled.Text`
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: #fff;
 `;
 
 const MainContent = styled.View`

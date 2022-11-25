@@ -1,82 +1,126 @@
 import React from "react";
-import { View, Text, StyleSheet, TextInput, Button } from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { Text } from "react-native";
+
+import {
+  ModalContainer,
+  Input,
+  ButtonPrimary,
+  ButtonSecondary,
+} from "../styles/index.styles";
 import useAuth from "../hooks/useAuth";
 
-export default function Sign() {
-  const [signInMode, setSignInMode] = React.useState(true);
+export default function Sign({ navigation }) {
+  const [registerMode, setRegisterMode] = React.useState(false);
+  const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [name, setName] = React.useState("");
+  const { signIn, signUp, loading, responseMessage, user } = useAuth();
 
-  const { signIn, signUp, responseMessage, signOut } = useAuth();
+  const handleSign = () => {
+    if (registerMode) {
+      signUp(name, email, password);
+    } else {
+      signIn(email, password, navigation);
+    }
+  };
 
   return (
-    <View
+    <ModalContainer
       style={{
-        flex: 1,
         justifyContent: "center",
-        backgroundColor: "#ff0000",
+        width: "100%",
+        flex: 1,
       }}
     >
-      <Text style={styles.title}>{signInMode ? "Login" : "Cadastro"}</Text>
-      {!signInMode && (
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
+      <Text
+        style={{
+          fontSize: 30,
+          fontWeight: "bold",
+          marginBottom: 20,
+          color: "#fff",
+        }}
+      >
+        {registerMode ? "Cadastro" : "Login"}
+      </Text>
+      {registerMode && (
+        <Input
+          placeholder="Nome"
+          placeholderTextColor="#ffffff90"
           value={name}
-          onChangeText={(text) => setName(text)}
+          onChangeText={(e) => setName(e)}
         />
       )}
-      <TextInput
-        style={styles.input}
+      <Input
         placeholder="Email"
         value={email}
-        onChangeText={(text) => setEmail(text)}
+        placeholderTextColor="#ffffff90"
+        onChangeText={(e) => setEmail(e)}
       />
-      <TextInput
-        style={styles.input}
+      <Input
         placeholder="Senha"
-        secureTextEntry={true}
         value={password}
-        onChangeText={(text) => setPassword(text)}
+        placeholderTextColor="#ffffff90"
+        onChangeText={(e) => setPassword(e)}
       />
-      <Button
-        title={signInMode ? "Sign In" : "Sign Up"}
+      {responseMessage && (
+        <Text
+          style={{
+            color: "#fff",
+            fontSize: 16,
+            textAlign: "center",
+            marginBottom: 20,
+          }}
+        >
+          {responseMessage}
+        </Text>
+      )}
+      <ButtonPrimary disabled={loading} onPress={() => handleSign()}>
+        {loading ? (
+          <Icon size={20} color="#fff" name="loading" />
+        ) : registerMode ? (
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "bold",
+              color: "#fff",
+            }}
+          >
+            Cadastrar
+          </Text>
+        ) : (
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "bold",
+              color: "#fff",
+            }}
+          >
+            Entrar
+          </Text>
+        )}
+      </ButtonPrimary>
+      <ButtonSecondary
+        disabled={loading}
         onPress={() => {
-          signInMode ? signIn(email, password) : signUp(name, email, password);
-        }}
-      />
-      <Button
-        title={signInMode ? "Sign Up" : "Sign In"}
-        onPress={() => {
-          setSignInMode(!signInMode);
+          setEmail("");
           setPassword("");
+          setName("");
+          setRegisterMode(!registerMode);
         }}
-      />
-      <Button
-        title={signInMode ? "Sign Up" : "Sign In"}
-        onPress={() => {
-          signOut();
-        }}
-      />
-      <Text style={styles.responseMessage}>{responseMessage}</Text>
-    </View>
+      >
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: "bold",
+            color: "#fff",
+          }}
+        >
+          {registerMode
+            ? "Já tem uma conta? Faça login"
+            : "Não tem uma conta? Cadastre-se"}
+        </Text>
+      </ButtonSecondary>
+    </ModalContainer>
   );
 }
-
-// Path: todo-app\src\Screens\Sign.jsx
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 30,
-    color: "#fff",
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  input: {
-    backgroundColor: "#fff",
-    padding: 10,
-    margin: 10,
-    borderRadius: 10,
-  },
-});

@@ -30,7 +30,7 @@ export default function Modal() {
       setTitle(currentTodo.title);
       setDescription(currentTodo.description);
     }
-  }, [currentTodo]);
+  }, [currentTodo, modalStatus]);
 
   async function handleTodo() {
     if (currentTodo) {
@@ -46,6 +46,7 @@ export default function Modal() {
           setDescription("");
           setTitle("");
           setModalStatus(false);
+          console.log(response);
         })
         .catch((error) => {
           console.log(error.response);
@@ -58,6 +59,7 @@ export default function Modal() {
           done: false,
         })
         .then((response) => {
+          console.log(response.data);
           setDescription("");
           setTitle("");
           setModalStatus(false);
@@ -82,14 +84,29 @@ export default function Modal() {
       });
   }
 
+  console.log(title, description);
+
   if (modalStatus) {
     return (
       <ModalTodoContainer>
-        <ModalContainer>
-          <ModalHeader>
-            <Text>{currentTodo ? "Editar Tarefa" : "Adicionar Tarefa"}</Text>
+        <ModalContainer Modal={true}>
+          <ModalHeader
+            style={{
+              marginTop: 30,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                color: "#fff",
+                marginBottom: 10,
+              }}
+            >
+              {currentTodo ? "Editar Tarefa" : "Adicionar Tarefa"}
+            </Text>
             <CloseButton
-              onClick={() => {
+              onPress={() => {
                 setTitle("");
                 setDescription("");
                 setModalStatus(false);
@@ -100,25 +117,57 @@ export default function Modal() {
             </CloseButton>
           </ModalHeader>
           <Input
+            placeholderTextColor="#ffffff90"
             value={title}
-            onChange={(title) => setTitle(title.target.value)}
+            style={{
+              color: "#fff",
+            }}
+            onChangeText={(title) => setTitle(title)}
             placeholder="Título"
           />
           <Input
+            placeholderTextColor="#ffffff90"
+            style={{
+              color: "#fff",
+            }}
             value={description}
-            onChange={(description) => setDescription(description.target.value)}
+            onChangeText={(description) => setDescription(description)}
             placeholder="Descrição"
           />
-          <ButtonPrimary onClick={() => handleTodo()}>
-            <Text>{currentTodo ? "Editar" : "Adicionar"}</Text>
+          <ButtonPrimary onPress={() => handleTodo()}>
+            <Text
+              style={{
+                color: "#fff",
+                fontSize: 16,
+                fontWeight: "bold",
+              }}
+            >
+              {currentTodo ? "Editar" : "Adicionar"}
+            </Text>
           </ButtonPrimary>
           {currentTodo && (
             <>
-              <ButtonDelete onClick={() => handleDelete()}>
-                <Text>Deletar</Text>
+              <ButtonDelete onPress={() => handleDelete()}>
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 16,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Deletar
+                </Text>
               </ButtonDelete>
               <ButtonSecondary>
-                <Text>Marcar Como Concluída</Text>
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 16,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Marcar Como Concluída
+                </Text>
               </ButtonSecondary>
             </>
           )}
