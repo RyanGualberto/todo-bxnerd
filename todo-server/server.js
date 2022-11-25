@@ -13,7 +13,16 @@ server.use(express.urlencoded({ extended: true }));
 server.use(cors());
 
 server.use("/api/v1", routes);
-server.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const options = {
+  customCssUrl: "/swagger-ui.css",
+  customSiteTitle: "ToDo API",
+};
+
+server.use(
+  "/api/v1/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, options)
+);
 
 server.listen(PORT, () => {
   console.log("Server is running on http://localhost:" + PORT);
