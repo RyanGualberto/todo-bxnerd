@@ -3,7 +3,7 @@ const server = express();
 const swaggerUi = require("swagger-ui-express");
 const cors = require("cors");
 const path = require("path");
-const __dirname = path.resolve();
+
 const ROOT_FOLDER = path.join(__dirname, "..");
 
 const routes = require("./src/routes/index.routes");
