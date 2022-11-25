@@ -9,7 +9,7 @@ const ROOT_FOLDER = path.join(__dirname, "..");
 const routes = require("./src/routes/index.routes");
 const swaggerDocument = require("./src/docs/swagger_output.json");
 const options = {
-  customCssUrl: "/swagger-ui.css",
+  customCssUrl: "./src/public/swagger-ui.css",
   customSiteTitle: "ToDo API",
 };
 
