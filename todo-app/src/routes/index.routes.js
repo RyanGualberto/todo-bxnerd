@@ -18,6 +18,7 @@ export default function Routes() {
         screenOptions={{
           headerShown: false,
         }}
+        initialRouteName={signed ? "Home" : "Sign"}
       >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Sign" component={Sign} />
