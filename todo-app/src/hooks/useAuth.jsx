@@ -48,6 +48,7 @@ export default function useAuth() {
         return { message: response.data.message };
       })
       .catch((error) => {
+        console.log(error.response.data);
         return { message: error.response.data.message };
       });
 
