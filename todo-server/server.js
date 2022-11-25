@@ -4,7 +4,7 @@ const swaggerUi = require("swagger-ui-express");
 const cors = require("cors");
 const path = require("path");
 
-const ROOT_FOLDER = path.join(__dirname, "..");
+const ROOT_FOLDER = path.join("./src", "..");
 
 const routes = require("./src/routes/index.routes");
 const swaggerDocument = require("./src/docs/swagger_output.json");
