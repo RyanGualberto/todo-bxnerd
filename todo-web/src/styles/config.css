@@ -4,11 +4,26 @@
   box-sizing: border-box;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  color: #333;
+  color: #fff;
 }
 
 .loading {
   animation: spin 1s linear infinite;
+}
+
+p {
+  color: #ffffff99;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+
+  p {
+    font-size: 14px;
+  }
 }
 
 @keyframes spin {

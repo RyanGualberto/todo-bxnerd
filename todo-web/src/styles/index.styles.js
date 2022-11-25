@@ -19,19 +19,26 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  background-color: #ffff;
+  background-color: #333;
   border-radius: 5px;
   padding: 20px;
   width: 60vw;
   height: 500px;
   box-shadow: 6px 6px 10px 0 rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
 `;
 
 const Input = styled.input`
   font-weight: 700;
   font-size: 16px;
-  color: #333;
+  color: #fff;
   flex: 1;
+  background-color: transparent;
   max-height: 44px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -52,6 +59,21 @@ const ButtonPrimary = styled.button`
   border-radius: 6px;
   margin: 4px 2px;
   cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: #3e8e41;
+  }
+
+  &:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const ButtonSecondary = styled.button`
@@ -68,6 +90,26 @@ const ButtonSecondary = styled.button`
   margin: 4px 2px;
   cursor: pointer;
   max-height: 44px;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: #0b7dda;
+  }
+
+  &:active {
+    background-color: #0b7dda;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+  &:disabled {
+    background-color: #2196f350;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const ButtonDelete = styled.button`
@@ -84,6 +126,26 @@ const ButtonDelete = styled.button`
   margin: 4px 2px;
   cursor: pointer;
   max-height: 44px;
+  transition: 0.3s;
+
+  &:hover {
+    background-color: #ba000d;
+  }
+
+  &:active {
+    background-color: #ba000d;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+
+  &:disabled {
+    background-color: #f4433650;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 const SearchContainer = styled.form`
   display: flex;
@@ -104,9 +166,10 @@ const SearchInput = styled.input`
   max-height: 60px;
   padding-left: 5px;
   font-size: 16px;
-  color: #333;
+  color: #fff;
   font-weight: 700;
   border: none;
+  background-color: transparent;
 `;
 
 const SearchButton = styled.button`
@@ -179,7 +242,7 @@ const ProfileInfoContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  color: #333;
+  color: #fff;
   margin-bottom: 10px;
 `;
 
@@ -189,7 +252,7 @@ const TodoContainer = styled.div`
   padding: 10px;
   justify-content: center;
   flex: 1;
-  border: 1px solid #333;
+  border: 1px solid #fff;
   border-radius: 6px;
   max-height: 70px;
   margin: 10px 0;
@@ -198,7 +261,11 @@ const TodoContainer = styled.div`
 const TodoTitle = styled.label`
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: #fff;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const MainContent = styled.div`
