@@ -153,10 +153,12 @@ const SearchContainer = styled.form`
   align-items: center;
   justify-content: center;
   flex: 1;
+  height: 60px;
   max-height: 60px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 10px;
+  min-height: 60px;
   overflow: hidden;
 `;
 
@@ -274,6 +276,28 @@ const MainContent = styled.div`
   overflow-y: auto;
 `;
 
+//circulo de load
+const Load = styled.div`
+  border: 5px solid #f3f3f390;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 80px;
+  height: 80px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  justify-self: center;
+  align-self: center;
+
+  @keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+`;
+
 export {
   Container,
   ModalContainer,
@@ -292,4 +316,5 @@ export {
   TodoTitle,
   MainContent,
   ButtonDelete,
+  Load,
 };
