@@ -7,6 +7,8 @@ import {
   IoLogoFirebase,
 } from "react-icons/io5";
 
+import setup from "../assets/downloads/ToDo-desktop-setup.exe";
+
 function Card({ project }) {
   return (
     <div className="flex flex-col min-w-[230px] max-w-[230px] justify-around bg-slate-800 gap-4 items-center p-6 border-white border-[1px] rounded-md">
@@ -23,9 +25,20 @@ function Card({ project }) {
         <IoLogoNodejs size={72} className="text-5xl text-blue-500" />
       )}
       <div className="flex gap-6 items-center text-white">
-        <a className=" rounded-md p-1 " href={project.liveLink}>
-          <AiOutlineLink size={36} color="#fff" />
-        </a>
+        {project.name === "ToDo - Desktop" ? (
+          <a
+            className=" rounded-md p-1"
+            download={project.name === "ToDo - Desktop"}
+            href={setup}
+          >
+            {console.log(project.liveLink)}
+            <AiOutlineLink size={36} color="#fff" />
+          </a>
+        ) : (
+          <a className=" rounded-md p-1" href={project.liveLink}>
+            <AiOutlineLink size={36} color="#fff" />
+          </a>
+        )}
         <div className="h-[32px] w-[1px]bg-white"></div>
         <a className=" rounded-md p-1 " href={project.gitLink}>
           <AiFillGithub size={36} color="#fff" />
