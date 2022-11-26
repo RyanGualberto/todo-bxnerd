@@ -33,16 +33,24 @@ export default function App() {
   const [currentUser, setCurrentUser] = React.useState(null);
   const user = JSON.parse(localStorage.getItem("@RNAuth:user"));
   const [loaded, setLoaded] = React.useState(false);
+  const [search, setSearch] = React.useState("");
 
   useEffect(() => {
     api.get("/users/user/" + user).then((response) => {
       setCurrentUser(response.data.user);
     });
-    api.get("/todos/" + user).then((todos) => {
-      setAllTodos(todos?.data?.data);
-      setLoaded(true);
-    });
-  }, [modalStatus]);
+    if (search === "") {
+      api.get("/todos/" + user).then((todos) => {
+        setAllTodos(todos?.data?.data);
+        setLoaded(true);
+      });
+    } else {
+      api.get("/todos/search/" + user + "/" + search).then((todos) => {
+        setAllTodos(todos?.data?.data);
+        setLoaded(true);
+      });
+    }
+  }, [modalStatus, search]);
 
   return (
     <ModalStateContext.Provider
@@ -59,10 +67,11 @@ export default function App() {
                   <CloseButton onClick={() => signOut()}>sair</CloseButton>
                 </ProfileInfoContainer>
                 <SearchContainer>
-                  <SearchInput placeholder="Pesquisar tarefa" />
-                  <SearchButton>
-                    <BsSearch size={24} />
-                  </SearchButton>
+                  <SearchInput
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Pesquisar tarefa"
+                  />
                 </SearchContainer>
                 <MainContent>
                   {allTodos?.reverse().map((todo) => (

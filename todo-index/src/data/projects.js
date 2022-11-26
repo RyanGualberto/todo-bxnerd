@@ -13,7 +13,7 @@ const projects = [
     name: "ToDo - Mobile",
     gitLink:
       "https://github.com/RyanGualberto/todo-bxnerd/tree/master/todo-app",
-    liveLink: "https://expo.dev/artifacts/eas/fmAdWK1mB2cH1GKSpvaHUH.apk",
+    liveLink: "https://expo.dev/artifacts/eas/wyUJpzLDFkDLsXV46z9YqV.apk",
     icon: "react",
     technologies: ["React"],
   },
