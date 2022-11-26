@@ -75,6 +75,36 @@
         }
       }
     },
+    "/todos/search/{uid}/{search}": {
+      "get": {
+        "tags": [
+          "Todo"
+        ],
+        "description": "Endpoint para buscar tarefas",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/todos/todo/{uid}/{id}": {
       "get": {
         "tags": [

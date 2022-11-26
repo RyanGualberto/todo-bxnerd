@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   getTodos,
+  searchTodos,
   getTodo,
   createTodo,
   updateTodo,
@@ -10,6 +11,8 @@ const {
 } = require("../controllers/todo.controller");
 
 router.get("/:uid", getTodos);
+
+router.get("/search/:uid/:search", searchTodos);
 
 router.get("/todo/:uid/:id", getTodo);
 

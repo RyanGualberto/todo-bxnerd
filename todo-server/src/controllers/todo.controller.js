@@ -27,6 +27,39 @@ const getTodos = (req, res, next) => {
     });
 };
 
+const searchTodos = (req, res, next) => {
+  // #swagger.tags = ['Todo']
+  // #swagger.description = 'Endpoint para buscar tarefas'
+  const { uid } = req.params;
+  const { search } = req.params;
+
+  firebase
+    .database()
+    .ref("todos/" + uid)
+    .once("value", (snapshot) => {
+      const data = snapshot.val();
+      const todos = data ? Object.values(data) : [];
+      const filteredTodos = todos.filter((todo) =>
+        todo.title.toLowerCase().includes(search.toLowerCase())
+      );
+
+      res.status(200).json({
+        message: "Tarefas encontradas",
+        data: data ? filteredTodos : [],
+      });
+
+      next();
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: "Erro ao obter tarefas",
+        error: error,
+      });
+
+      console.error(error);
+    });
+};
+
 const getTodo = (req, res, next) => {
   // #swagger.tags = ['Todo']
   // #swagger.description = 'Endpoint para obter uma tarefa'
@@ -155,4 +188,11 @@ const deleteTodo = (req, res, next) => {
     });
 };
 
-module.exports = { getTodos, getTodo, createTodo, updateTodo, deleteTodo };
+module.exports = {
+  getTodos,
+  searchTodos,
+  getTodo,
+  createTodo,
+  updateTodo,
+  deleteTodo,
+};
