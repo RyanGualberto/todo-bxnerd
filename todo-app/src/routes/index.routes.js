@@ -9,7 +9,7 @@ import useAuth from "../hooks/useAuth";
 import { createStackNavigator } from "@react-navigation/stack";
 
 export default function Routes() {
-  const { signed, user } = useAuth();
+  const { signed } = useAuth();
   const Stack = createStackNavigator();
 
   return (

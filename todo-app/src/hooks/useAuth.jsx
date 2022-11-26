@@ -1,10 +1,12 @@
 import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../services/apiConnection";
+import { userContext } from "../contexts/userContext";
 
 export default function useAuth() {
   const [user, setUser] = React.useState(null);
   const [responseMessage, setResponseMessage] = React.useState("");
+  const { userLoaded, setUserLoaded } = React.useContext(userContext);
 
   React.useEffect(() => {
     async function loadStorageData() {
@@ -27,14 +29,15 @@ export default function useAuth() {
         navigation.navigate("Home");
         AsyncStorage.setItem("@RNAuth:user", JSON.stringify(response.data.uid));
         setUser(response.data.uid);
+        setUserLoaded(!userLoaded);
         return { message: response.data, uid: response.data.uid };
       })
       .catch((error) => {
-        console.log("login", error.response.data.message);
+        console.log("sign in", error.response);
         return { message: error.response.data.message, uid: null };
       });
 
-    const { message, uid } = response;
+    const { message } = response;
 
     setResponseMessage(message?.message);
   }
@@ -42,7 +45,7 @@ export default function useAuth() {
   async function signOut(navigation) {
     const response = await api
       .post("/users/logout", {
-        uid: user.uid,
+        uid: user,
       })
       .then((response) => {
         navigation.navigate("Sign");
@@ -51,10 +54,11 @@ export default function useAuth() {
             uid: null,
           });
         });
+        setUserLoaded(!userLoaded);
         return { message: response.data.message };
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log("log out", error.response.data);
         return { message: error.response.data.message };
       });
 
@@ -74,7 +78,7 @@ export default function useAuth() {
         setResponseMessage(response.data);
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log("sign up", error.response);
         setResponseMessage(error.response.data.message);
       });
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Text } from "react-native";
 
@@ -24,6 +24,12 @@ export default function Sign({ navigation }) {
       signIn(email, password, navigation);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      navigation.navigate("Home");
+    }
+  }, [user]);
 
   return (
     <ModalContainer

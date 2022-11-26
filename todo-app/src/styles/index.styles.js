@@ -5,7 +5,6 @@ const ModalContainer = styled.View`
   flex-direction: column;
   position: relative;
   background-color: #333;
-  border-radius: 5px;
   padding: 20px;
   flex: 1;
   z-index: ${(props) => (props.modal ? 10 : 0)};
