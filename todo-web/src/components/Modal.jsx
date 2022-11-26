@@ -23,11 +23,13 @@ export default function Modal() {
   const [title, setTitle] = React.useState("");
   const { user } = useAuth();
   const [description, setDescription] = React.useState("");
+  const [done, setDone] = React.useState(false);
 
   useEffect(() => {
     if (currentTodo) {
       setTitle(currentTodo.title);
       setDescription(currentTodo.description);
+      setDone(currentTodo.done);
     }
   }, [currentTodo]);
 
@@ -69,6 +71,27 @@ export default function Modal() {
           toast.error(error.response.data.message);
         });
     }
+  }
+
+  async function markedAsDone() {
+    await api
+      .put("/todos/" + user + "/" + currentTodo.todoId, {
+        todoId: currentTodo.todoId,
+        title,
+        description,
+        done: done ? false : true,
+      })
+      .then((response) => {
+        setCurrentTodo(null);
+        setDescription("");
+        setTitle("");
+        setModalStatus(false);
+        toast.success(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error.response);
+        toast.error(error.response.data.message);
+      });
   }
 
   async function handleDelete() {
@@ -122,7 +145,9 @@ export default function Modal() {
               <ButtonDelete onClick={() => handleDelete()}>
                 Deletar
               </ButtonDelete>
-              <ButtonSecondary>Marcar Como Concluída</ButtonSecondary>
+              <ButtonSecondary onClick={() => markedAsDone()}>
+                {done ? "Marcar como pendente" : "Marcar como concluído"}
+              </ButtonSecondary>
             </>
           )}
         </ModalContainer>

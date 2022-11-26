@@ -14,6 +14,7 @@ import {
   TodoTitle,
   MainContent,
   Load,
+  TodoStatus,
 } from "../styles/index.styles";
 
 import { BsPlusLg, BsSearch } from "react-icons/bs";
@@ -72,6 +73,7 @@ export default function App() {
                       }}
                       key={todo.todoId}
                     >
+                      <TodoStatus done={todo.done} />
                       <TodoTitle>{todo.title}</TodoTitle>
                       <p>{todo.description}</p>
                     </TodoContainer>

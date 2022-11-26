@@ -252,12 +252,15 @@ const TodoContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
+  position: relative;
   justify-content: center;
   flex: 1;
   border: 1px solid #fff;
   border-radius: 6px;
+  min-height: 70px;
   max-height: 70px;
   margin: 10px 0;
+  overflow-y: hidden;
 `;
 
 const TodoTitle = styled.label`
@@ -273,10 +276,15 @@ const TodoTitle = styled.label`
 const MainContent = styled.div`
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: scroll;
+  // escondendo a barra de rolagem
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
-//circulo de load
 const Load = styled.div`
   border: 5px solid #f3f3f390;
   border-radius: 50%;
@@ -296,6 +304,13 @@ const Load = styled.div`
       -webkit-transform: rotate(360deg);
     }
   }
+`;
+const TodoStatus = styled.div`
+  position: absolute;
+  right: 0px;
+  height: 70px;
+  width: 5px;
+  background-color: ${(props) => (props.done ? "#4caf56" : "#f44336")};
 `;
 
 export {
@@ -317,4 +332,5 @@ export {
   MainContent,
   ButtonDelete,
   Load,
+  TodoStatus,
 };
