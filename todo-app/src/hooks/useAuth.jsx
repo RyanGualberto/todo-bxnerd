@@ -75,7 +75,9 @@ export default function useAuth() {
         password,
       })
       .then((response) => {
-        setResponseMessage(response.data);
+        setResponseMessage(response.data.message);
+
+        return { message: response.data.message };
       })
       .catch((error) => {
         console.log("sign up", error.response);
@@ -83,5 +85,13 @@ export default function useAuth() {
       });
   }
 
-  return { signed: !!user, user, signIn, signOut, signUp, responseMessage };
+  return {
+    signed: !!user,
+    user,
+    signIn,
+    signOut,
+    signUp,
+    responseMessage,
+    setResponseMessage,
+  };
 }

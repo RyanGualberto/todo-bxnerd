@@ -7,7 +7,7 @@ const ModalContainer = styled.View`
   background-color: #333;
   padding: 20px;
   flex: 1;
-  z-index: ${(props) => (props.modal ? 10 : 0)};
+  z-index: ${(props) => (props.Modal ? 10 : 0)};
   height: 100%;
   width: 100%;
 `;
@@ -54,7 +54,7 @@ const ButtonDelete = styled.TouchableOpacity`
   justify-content: center;
   border-radius: 6px;
   margin: 4px 2px;
-  max-height: 44px;
+  max-height: 48px;
 `;
 
 const SearchContainer = styled.View`
@@ -112,7 +112,7 @@ const ModalTodoContainer = styled.View`
   background-color: #000000;
   height: 100%;
   width: 100%;
-  z-index: 5;
+  z-index: 13;
   justify-content: center;
   align-items: center;
 `;
@@ -156,6 +156,7 @@ const TodoContainer = styled.TouchableOpacity`
   border: 0.5px solid #ccc;
   margin-bottom: 15px;
   border-radius: 5px;
+  overflow: hidden;
 `;
 
 const TodoTitle = styled.Text`
@@ -170,7 +171,16 @@ const MainContent = styled.View`
   overflow-y: auto;
 `;
 
+const TodoStatus = styled.View`
+  position: absolute;
+  right: 0px;
+  height: 70px;
+  width: 5px;
+  background-color: ${(props) => (props.done ? "#4caf56" : "#f44336")};
+`;
+
 export {
+  TodoStatus,
   ModalContainer,
   Input,
   ButtonPrimary,

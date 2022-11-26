@@ -12,18 +12,23 @@ import {
   TodoContainer,
   TodoTitle,
   MainContent,
+  TodoStatus,
 } from "../styles/index.styles.js";
 
 import Icon from "react-native-vector-icons/Feather";
 import Modal from "../components/Modal";
 
 import api from "../services/apiConnection";
-import { Text, ScrollView } from "react-native";
+import { Text, ScrollView, RefreshControl, Dimensions } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { userContext } from "../contexts/userContext";
 
 export const ModalStateContext = React.createContext();
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 export default function App({ navigation }) {
   const [modalStatus, setModalStatus] = React.useState(false);
@@ -32,7 +37,9 @@ export default function App({ navigation }) {
   const [allTodos, setAllTodos] = React.useState([]);
   const [loaded, setLoaded] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState(null);
-  const { userLoaded, setUserLoaded } = React.useContext(userContext);
+  const { userLoaded } = React.useContext(userContext);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [search, setSearch] = React.useState("");
 
   React.useEffect(() => {
     console.log(user);
@@ -43,23 +50,50 @@ export default function App({ navigation }) {
         api.get("/users/user/" + JSON.parse(storageUser)).then((response) => {
           setCurrentUser(response.data.user);
         });
-        api.get("/todos/" + JSON.parse(storageUser)).then((todos) => {
-          setAllTodos(todos?.data?.data);
-          setLoaded(true);
-        });
+        if (search === "") {
+          api.get("/todos/" + JSON.parse(storageUser)).then((response) => {
+            setAllTodos(response.data.data);
+            setLoaded(true);
+          });
+        } else {
+          api
+            .get("/todos/search/" + JSON.parse(storageUser) + "/" + search)
+            .then((response) => {
+              setAllTodos(response.data.data);
+              setLoaded(true);
+            })
+            .catch((error) => {
+              console.log(error.response);
+            });
+        }
       }
     }
     loadStorageData();
-  }, [modalStatus, userLoaded]);
+  }, [modalStatus, userLoaded, refreshing, search]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   return (
-    <ModalStateContext.Provider
-      value={{ currentTodo, setCurrentTodo, modalStatus, setModalStatus }}
+    <ScrollView
+      style={{
+        flex: 1,
+      }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={() => onRefresh()} />
+      }
     >
-      {modalStatus ? (
-        <Modal />
-      ) : (
-        <ModalContainer>
+      <ModalStateContext.Provider
+        value={{ currentTodo, setCurrentTodo, modalStatus, setModalStatus }}
+      >
+        {modalStatus && <Modal />}
+        <ModalContainer
+          style={{
+            minHeight: Dimensions.get("window").height,
+          }}
+        >
           {loaded ? (
             <>
               <ProfileInfoContainer>
@@ -89,10 +123,9 @@ export default function App({ navigation }) {
                 <SearchInput
                   placeholderTextColor="#ffffff90"
                   placeholder="Pesquisar tarefa"
+                  onChangeText={(text) => setSearch(text)}
+                  value={search}
                 />
-                <SearchButton>
-                  <Icon name="search" color="#fff" size={24} />
-                </SearchButton>
               </SearchContainer>
               <ScrollView
                 style={{
@@ -109,6 +142,7 @@ export default function App({ navigation }) {
                       }}
                       key={todo.todoId}
                     >
+                      <TodoStatus done={todo.done} />
                       <TodoTitle>{todo.title}</TodoTitle>
                       <Text
                         style={{
@@ -137,7 +171,7 @@ export default function App({ navigation }) {
             </Text>
           )}
         </ModalContainer>
-      )}
-    </ModalStateContext.Provider>
+      </ModalStateContext.Provider>
+    </ScrollView>
   );
 }

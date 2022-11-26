@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 
 import {
   ModalContainer,
@@ -15,7 +15,9 @@ export default function Sign({ navigation }) {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const { signIn, signUp, loading, responseMessage, user } = useAuth();
+  const { signIn, signUp, loading, responseMessage, user, setResponseMessage } =
+    useAuth();
+  const [toastVisible, setToastVisible] = React.useState(false);
 
   const handleSign = () => {
     if (registerMode) {
@@ -29,7 +31,19 @@ export default function Sign({ navigation }) {
     if (user) {
       navigation.navigate("Home");
     }
-  }, [user]);
+  }, [user, responseMessage]);
+
+  useEffect(() => {
+    if (responseMessage) {
+      setToastVisible(true);
+      responseMessage === "Usuário criado com sucesso" &&
+        setRegisterMode(!registerMode);
+      setTimeout(() => {
+        setToastVisible(false);
+        setResponseMessage("");
+      }, 3000);
+    }
+  }, [responseMessage]);
 
   return (
     <ModalContainer
@@ -39,6 +53,59 @@ export default function Sign({ navigation }) {
         flex: 1,
       }}
     >
+      {responseMessage && toastVisible && (
+        <View
+          style={{
+            backgroundColor: "#fff",
+            padding: 10,
+            borderRadius: 5,
+            position: "absolute",
+            top: 35,
+            zIndex: 1,
+            flexDirection: "row",
+            width: "100%",
+            alignItems: "center",
+            paddingVertical: 10,
+            alignSelf: "center",
+            borderWidth: 1,
+            borderColor:
+              responseMessage === "Usuário criado com sucesso"
+                ? "#00ff00"
+                : responseMessage === "Usuário logado com sucesso"
+                ? "#00ff00"
+                : "#ff0000",
+          }}
+        >
+          <Icon
+            name={
+              responseMessage === "Usuário logado com sucesso"
+                ? "check-circle"
+                : responseMessage === "Usuário criado com sucesso"
+                ? "check-circle"
+                : "error"
+            }
+            size={42}
+            color={
+              responseMessage === "Usuário logado com sucesso"
+                ? "#00ff00"
+                : responseMessage === "Usuário criado com sucesso"
+                ? "#00ff00"
+                : "#ff0000"
+            }
+          />
+          <Text
+            style={{
+              marginLeft: 10,
+              color: "#333",
+              fontSize: 20,
+              fontWeight: "bold",
+            }}
+          >
+            {responseMessage}
+          </Text>
+        </View>
+      )}
+
       <Text
         style={{
           fontSize: 30,
@@ -69,18 +136,6 @@ export default function Sign({ navigation }) {
         placeholderTextColor="#ffffff90"
         onChangeText={(e) => setPassword(e)}
       />
-      {responseMessage && (
-        <Text
-          style={{
-            color: "#fff",
-            fontSize: 16,
-            textAlign: "center",
-            marginBottom: 20,
-          }}
-        >
-          {responseMessage}
-        </Text>
-      )}
       <ButtonPrimary disabled={loading} onPress={() => handleSign()}>
         {loading ? (
           <Icon size={20} color="#fff" name="loading" />
